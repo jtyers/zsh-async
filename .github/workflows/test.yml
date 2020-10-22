@@ -29,11 +29,14 @@ jobs:
 
       - name: Build zsh
         run: |
-          mkdir zsh
-          cd zsh-build
-          ./configure --prefix=../zsh --without-tcsetpgrp
+          sudo apt-get install build-essential autoconf libncurses-dev
+          cd "$GITHUB_WORKSPACE/zsh-build"
+          aclocal
+          autoconf
+          autoheader
+          ./configure --without-tcsetpgrp
           make
-          make install
+          sudo make install.bin install.modules install.fns
 
       - name: Checkout code
         uses: actions/checkout@v2
