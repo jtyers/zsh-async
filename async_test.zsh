@@ -263,6 +263,9 @@ test_async_job_unique_worker() {
 		sleep 0.1; print $1
 	}
 
+	setopt xtrace
+	t_defer unsetopt xtrace
+
 	# Start a unique (job) worker.
 	async_start_worker test -u
 
@@ -271,7 +274,7 @@ test_async_job_unique_worker() {
 	async_job test helper one
 	async_job test helper two
 
-	while ! async_process_results test cb; do :; done
+	while ! async_process_results test cb; do sleep 0.05; done
 
 	# If both jobs were running but only one was complete,
 	# async_process_results() could've returned true for
