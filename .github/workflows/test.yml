@@ -20,7 +20,15 @@ jobs:
           # - "5.0.2"
     runs-on: ${{matrix.os}}
     steps:
+      - name: Cache zsh
+        id: cache-zsh
+        uses: actions/cache@v2
+        with:
+          path: /opt/zsh
+          key: ${{runner.os}}-${{matrix.zsh-version}}
+
       - name: Checkout zsh
+        if: steps.cache-zsh.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         with:
           repository: zsh-users/zsh
@@ -28,13 +36,14 @@ jobs:
           path: zsh-build
 
       - name: Build zsh
+        if: steps.cache-zsh.outputs.cache-hit != 'true'
         run: |
           sudo apt-get install build-essential autoconf libncurses-dev
           cd "$GITHUB_WORKSPACE/zsh-build"
           aclocal
           autoconf
           autoheader
-          ./configure --without-tcsetpgrp
+          ./configure --prefix=/opt/zsh --without-tcsetpgrp
           make
           sudo make install.bin install.modules install.fns
 
@@ -43,5 +52,5 @@ jobs:
 
       - name: Run tests
         run: |
-          export PATH="$(pwd)/zsh/bin:$PATH"
+          export PATH="/opt/zsh/bin:$PATH"
           ./test.zsh -v
