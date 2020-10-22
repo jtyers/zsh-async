@@ -23,7 +23,7 @@ jobs:
       - name: Checkout zsh
         uses: actions/checkout@v2
         with:
-          repository: github.com/zsh-users/zsh
+          repository: zsh-users/zsh
           ref: zsh-${{matrix.zsh-version}}
           path: zsh-build
 
