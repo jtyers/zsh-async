@@ -361,6 +361,7 @@ test_async_flush_jobs() {
 	}
 
 	async_start_worker test
+	t_defer async_stop_worker test
 
 	# Start a job that prints 1 and starts two disowned child processes that
 	# print 2 and 3, respectively, after a timeout. The job will not exit
@@ -392,8 +393,6 @@ test_async_flush_jobs() {
 	sleep 0.1
 	async_process_results test cb
 	(( $#r == 0 )) || t_error "want no output, got ${(Vq-)r}"
-
-	async_stop_worker test
 }
 
 test_async_worker_survives_termination_of_other_worker() {
