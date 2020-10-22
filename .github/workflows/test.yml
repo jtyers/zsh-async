@@ -51,6 +51,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run tests
+        timeout-minutes: 2
         run: |
           export PATH="/opt/zsh/bin:$PATH"
           ./test.zsh -v
