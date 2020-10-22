@@ -54,4 +54,4 @@ jobs:
         timeout-minutes: 2
         run: |
           export PATH="/opt/zsh/bin:$PATH"
-          ./test.zsh -v
+          ./test.zsh -v -x
