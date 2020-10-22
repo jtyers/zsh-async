@@ -377,7 +377,9 @@ test_async_flush_jobs() {
 	# Start a job that prints four, it will produce
 	# output but we will not process it.
 	async_job test print_four
-	sleep 0.5
+	sleep 0.2
+
+	setopt xtrace
 
 	# Flush jobs, this kills running jobs and discards unprocessed results.
 	# TODO: Confirm that they no longer exist in the process tree.
@@ -388,6 +390,8 @@ test_async_flush_jobs() {
 	[[ $output = *'rint_four 0 4'* ]] || {
 		t_error "want discarded output 'rint_four 0 4' when ASYNC_DEBUG=1, got ${(Vq-)output}"
 	}
+
+	unsetopt xtrace
 
 	# Check that the killed job did not produce output.
 	sleep 0.1
