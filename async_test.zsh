@@ -377,7 +377,7 @@ test_async_flush_jobs() {
 	# Start a job that prints four, it will produce
 	# output but we will not process it.
 	async_job test print_four
-	sleep 0.2
+	sleep 0.5
 
 	# Flush jobs, this kills running jobs and discards unprocessed results.
 	# TODO: Confirm that they no longer exist in the process tree.
