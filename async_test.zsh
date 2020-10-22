@@ -383,8 +383,10 @@ test_async_flush_jobs() {
 
 	# Flush jobs, this kills running jobs and discards unprocessed results.
 	# TODO: Confirm that they no longer exist in the process tree.
-	local output
-	output="${(Q)$(ASYNC_DEBUG=1 async_flush_jobs test)}"
+	local output line
+	ASYNC_DEBUG=1 async_flush_jobs test | while read -r line; do output+="$line"; done
+	output="${(Q)output}"
+
 	# NOTE(mafredri): First 'p' in print_four is lost when null-prefixing
 	# _async_job output.
 	[[ $output = *'rint_four 0 4'* ]] || {
